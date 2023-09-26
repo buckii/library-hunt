@@ -20,10 +20,12 @@ let email = '';
 // Tag 2 - Vote
 let vote = '';
 let vote_success = null;
+let vote_options = ['Harry Potter', 'Lord of the Rings'];
 
 Pusher.logToConsole = true;
 
 onMount(() => {
+console.log('onMount');
 
     //pull from local storage
     name = localStorage.getItem('name') || '';
@@ -39,7 +41,7 @@ onMount(() => {
     let hash_array = document.location.search.replace(/^\?/,'').split('/');
     
     // set tag number
-    tag_number = parseInt(atob(decodeURIComponent(hash_array[0])));
+    tag_number = parseInt(atob(decodeURIComponent(hash_array[0]))) || 0;
     tag_arg = hash_array.length > 1 ? atob(decodeURIComponent(hash_array[1])) : '';
 
     // limit valid tag_arg values
@@ -111,7 +113,23 @@ function resetVote() {
     vote_success = '';
 }
 </script>
-{#if tag_number === 1}
+Tag: {tag_number}
+{#if tag_number === 0}
+<p>Welcome to the Buckeye Innovation NFC demo scavenger hunt!</p>
+Instructions:
+<ul>
+    <li>Find a Buckeye Innovation book and touch your phone to the tap zone (camera area for iPhone, center back for Android)</li>
+    <li>Answer the question asked to get the next clue.</li>
+    <li>Repeat for all 4 tags.</li>
+    <li>Return to our booth to collect your prize.</li>
+</ul>
+<p>For testing only:</p>
+<ol>
+    {#each [1,2,3,4,5] as tag}
+    <li><a href={'/?' + btoa(tag)}>Tag {tag}</a></li>
+    {/each}
+</ol>
+{:else if tag_number === 1}
     <h1>You found the first tag!</h1>
     {#if tags_tapped.includes(1) }
         <h2>It's great to meet you, {name}!</h2>
@@ -122,26 +140,26 @@ function resetVote() {
     {:else}
         <p>Would you share with us a little about yourself?</p>
         <p><input type="text" bind:value={name} placeholder="Your First Name" /></p>
-        <p><input type="text" bind:value={library} placeholder="Your Library" /></p>
+        <p><input type="text" bind:value={library} placeholder="Your Library / Organization" /></p>
         <p><input type="email" bind:value={email} placeholder="Your Email Address" /></p>
         <button on:click={handleSubmitFirst}>Submit</button>
     {/if}
 {:else if tag_number == 2}
-    {#if !tag_arg}
-        Please try again with a valid vote option
+    {#if !vote_success}
+    <p>Welcome back, {name}! Which of the following do you think is the best book series? Click one to vote.</p>
+    {#each vote_options as option}
+    <p><button on:click={() => handleSubmitVote(option)}>{option}</button></p>
+    {/each}
     {:else}
-        {#if !vote_success}
-        <p>Welcome back, {name}! You are about to vote for {tag_arg}.</p>
-        <p><button on:click={() => handleSubmitVote(tag_arg)}>Confirm Vote</button></p>
-        {:else}
-        <p>Your vote has been cast for {tag_arg}! Visit the Buckeye Innovation booth to see the current vote tally.</p>
-        <p><button on:click={resetVote}>Change my vote</button></p>
-        {/if}
+    <p>Your vote has been cast for {tag_arg}! Visit the Buckeye Innovation booth to see the current vote tally.</p>
+    <p><button on:click={resetVote}>Change my vote</button></p>
     {/if}
 {:else if tag_number == 3}
-    This is the third tag
+    This is the third tag: Girls Who Code
 {:else if tag_number == 4}
-    This is the fourth tag
+    This is the fourth tag: COSI
+{:else if tag_number == 5}
+    This is the fifth tag: PLA
 {/if}
 
 <!--
