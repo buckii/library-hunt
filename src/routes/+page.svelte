@@ -8,7 +8,7 @@ import axios from 'axios';
 let pusher;
 let pusher_channel;
 
-let tag_number = 0;
+let tag_number = null;
 let tags_tapped = [];
 let tag_arg = '';
 
@@ -22,6 +22,8 @@ let vote = '';
 let vote_success = null;
 let vote_options = ['Harry Potter', 'Lord of the Rings'];
 
+let girls_who_code_saved = false;
+
 Pusher.logToConsole = true;
 
 onMount(() => {
@@ -33,6 +35,8 @@ console.log('onMount');
     email = localStorage.getItem('email') || '';
     let tags_tapped_string = localStorage.getItem('tags_tapped');
     tags_tapped = tags_tapped_string ? JSON.parse(tags_tapped_string) : [];
+
+    console.log(['tapped',tags_tapped]);
     
     vote = localStorage.getItem('vote') || '';
     let vote_success_string = localStorage.getItem('vote_success');
@@ -45,11 +49,17 @@ console.log('onMount');
     tag_arg = hash_array.length > 1 ? atob(decodeURIComponent(hash_array[1])) : '';
 
     // limit valid tag_arg values
+    /*
     if(tag_number == 2) {
         let valid_args = ['Harry Potter', 'Lord of the Rings'];
         if(!valid_args.includes(tag_arg)) {
             tag_arg = '';
         }
+    }
+    */
+
+    if(tag_number > 1) {
+        store();
     }
 
     pusher = new Pusher(PUBLIC_PUSHER_KEY, {
@@ -68,22 +78,29 @@ function store() {
     localStorage.setItem('name', name);
     localStorage.setItem('library', library);
     localStorage.setItem('email', email);
-    localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
     localStorage.setItem('vote', vote);
-    localStorage.setItem('vote', JSON.stringify(vote_success));
+    localStorage.setItem('vote_success', JSON.stringify(vote_success));
 
     if(!tags_tapped) {
         tags_tapped = [];
     }
-    tags_tapped.push(tag_number);
+    if(!tags_tapped.includes(tag_number)) {
+        tags_tapped.push(tag_number);
+    }
     tags_tapped = tags_tapped;
+    localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
+}
+
+function resetTagsTapped() {
+    tags_tapped = [];
+    localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
 }
 
 function handleSubmitFirst() {
     store();
 }
 
-function handleSubmitVote(vote) {
+function handleSubmitVote(vote_val) {
     /* fetch
     const response = await fetch('/vote', {
         method: 'POST',
@@ -93,6 +110,7 @@ function handleSubmitVote(vote) {
         }
     });
     */
+    vote = vote_val;
     let data = {
         vote,
         email
@@ -108,12 +126,24 @@ function handleSubmitVote(vote) {
     });
 }
 
+function handleSubmitGirlsWhoCode() {
+    let url = 'https://girlswhocode.com/addcontact';
+    let data = {
+        "EmailAddress": email,
+        "IsStudent": false
+    };
+    axios.post(url, data)
+        .then((response) => {
+            girls_who_code_saved = true;
+        })
+        .catch(err => console.log(err));
+}
+
 function resetVote() {
     vote = '';
     vote_success = '';
 }
 </script>
-Tag: {tag_number}
 {#if tag_number === 0}
 <p>Welcome to the Buckeye Innovation NFC demo scavenger hunt!</p>
 Instructions:
@@ -129,6 +159,7 @@ Instructions:
     <li><a href={'/?' + btoa(tag)}>Tag {tag}</a></li>
     {/each}
 </ol>
+<button on:click={resetTagsTapped}>Reset Tags Tapped</button>
 {:else if tag_number === 1}
     <h1>You found the first tag!</h1>
     {#if tags_tapped.includes(1) }
@@ -137,6 +168,8 @@ Instructions:
         <p>You're on a journey to discover some ways NFC tags and web technology can effectively engage and serve your library staff, cardholders, donors, and more!</p>
 
         <p>Good luck with your scavenger hunt. We'll talk to you very soon... when you find our second tag.</p>
+
+        <p>Hint: We love hiring apprentices and internships. Equitable access to technology and design depends on <em>Girls Who Code</em>.</p>
     {:else}
         <p>Would you share with us a little about yourself?</p>
         <p><input type="text" bind:value={name} placeholder="Your First Name" /></p>
@@ -151,18 +184,31 @@ Instructions:
     <p><button on:click={() => handleSubmitVote(option)}>{option}</button></p>
     {/each}
     {:else}
-    <p>Your vote has been cast for {tag_arg}! Visit the Buckeye Innovation booth to see the current vote tally.</p>
+    <p>Your vote has been cast for {vote}! Visit the Buckeye Innovation booth to see the current vote tally.</p>
     <p><button on:click={resetVote}>Change my vote</button></p>
     {/if}
 {:else if tag_number == 3}
-    This is the third tag: Girls Who Code
+    <p>You found the third tag!</p>
+    <h2>Girls Who Code</h2>
+    <p>What a great org. Sign up for their email email list.</p>
+    {#if girls_who_code_saved}
+    <button on:click={handleSubmitGirlsWhoCode}>Sign up for Updates</button>
+    {:else}
+    <p><em>Thanks for signing up for Girls Who Code updates!</em></p>
+    {/if}
 {:else if tag_number == 4}
-    This is the fourth tag: COSI
+    <p>You found the third tag!</p>
+    <h2>COSI</h2>
+    <p>Kids across the state had extra support this summer thanks to a partnership between COSI an OLC. Visit their booth to talk about how your library can participate in the future.</p>
+    <p><a href="https://cosi.org/zoo/item/cosi-and-ohio-library-council-kickoff" target="_blank">COSI and OLC Partnership</a></p>
 {:else if tag_number == 5}
-    This is the fifth tag: PLA
+    <p>You found the fifth tag!</p>
+    <h2>PLA</h2>
+    <p>You should attend the Public Library Association conference April 2024.</p>
+    <p><a href="https://bit.ly/PLAOLC23" target="_blank">Sign up for the PLA raffle to learn more!</a></p>
 {/if}
 
 <!--
 PLA Raffle Entry:
-https://bit.ly/PLAOLC23
+
 -->
