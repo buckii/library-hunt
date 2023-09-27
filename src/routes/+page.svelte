@@ -35,7 +35,7 @@ const tags = [
     },
     {
         name: 'SHP',
-        text: '',
+        text: 'SHP is a team of dynamic architects, engineers and designers simply helping people enrich their communities and engage in better human experiences.',
         hint: 'Cincinnati\'s largest architectural firm that is <strong><u>S</u></strong>imply <strong><u>H</u></strong>elping <strong></u>P</u></strong>eople with access to a team of dynamic architects, designers, and engineers.',
         cta_img: '',
         cta_text: 'Visit SHP online',
