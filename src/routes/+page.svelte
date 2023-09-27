@@ -109,8 +109,8 @@ console.log('onMount');
     let hash_array = document.location.search.replace(/^\?/,'').split('/');
 
     // testing mode when #test is in the URL
-    testing = document.location.hash.match(/^#test/) || testing;
-    if(document.location.hash.match(/^#notest/)) testing = false;
+    testing = document.location.hash.match(/^#test/);// || testing;
+    //if(document.location.hash.match(/^#notest/)) testing = false;
     
     // set tag number
     tag_number = parseInt(atob(decodeURIComponent(hash_array[0]))) || 0;
