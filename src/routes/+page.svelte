@@ -93,7 +93,12 @@ function store() {
 
 function resetTagsTapped() {
     tags_tapped = [];
-    localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
+    name = '';
+    email = '';
+    library = '';
+    vote = '';
+    vote_success = false;
+    store();
 }
 
 function handleSubmitFirst() {
@@ -142,6 +147,7 @@ function handleSubmitGirlsWhoCode() {
 function resetVote() {
     vote = '';
     vote_success = '';
+    store();
 }
 </script>
 {#if tag_number === 0}
@@ -163,13 +169,14 @@ Instructions:
 {:else if tag_number === 1}
     <h1>You found the first tag!</h1>
     {#if tags_tapped.includes(1) }
-        <h2>It's great to meet you, {name}!</h2>
+        <h2>It's great to meet you, {name}.</h2>
         
         <p>You're on a journey to discover some ways NFC tags and web technology can effectively engage and serve your library staff, cardholders, donors, and more!</p>
 
         <p>Good luck with your scavenger hunt. We'll talk to you very soon... when you find our second tag.</p>
 
-        <p>Hint: We love hiring apprentices and internships. Equitable access to technology and design depends on <em>Girls Who Code</em>.</p>
+        <h3 class="hint">Hint!</h3>
+        <div class="hint-container">We love hiring apprentices and internships. Equitable access to technology and design depends on <strong>Girls Who Code</strong>.</div>
     {:else}
         <p>Would you share with us a little about yourself?</p>
         <p><input type="text" bind:value={name} placeholder="Your First Name" /></p>
@@ -178,37 +185,33 @@ Instructions:
         <button on:click={handleSubmitFirst}>Submit</button>
     {/if}
 {:else if tag_number == 2}
+    <h1>You found the 2<sup>nd</sup> tag!</h1>
     {#if !vote_success}
     <p>Welcome back, {name}! Which of the following do you think is the best book series? Click one to vote.</p>
     {#each vote_options as option}
     <p><button on:click={() => handleSubmitVote(option)}>{option}</button></p>
     {/each}
     {:else}
-    <p>Your vote has been cast for {vote}! Visit the Buckeye Innovation booth to see the current vote tally.</p>
+    <p>Your vote has been cast for <strong>{vote}</strong>. Visit the Buckeye Innovation booth to see the current vote tally.</p>
     <p><button on:click={resetVote}>Change my vote</button></p>
     {/if}
 {:else if tag_number == 3}
-    <p>You found the third tag!</p>
+    <h1>You found the 3rd tag!</h1>
     <h2>Girls Who Code</h2>
     <p>What a great org. Sign up for their email email list.</p>
-    {#if girls_who_code_saved}
+    {#if !girls_who_code_saved}
     <button on:click={handleSubmitGirlsWhoCode}>Sign up for Updates</button>
     {:else}
     <p><em>Thanks for signing up for Girls Who Code updates!</em></p>
     {/if}
 {:else if tag_number == 4}
-    <p>You found the third tag!</p>
+    <h1>You found the 4th tag!</h1>
     <h2>COSI</h2>
     <p>Kids across the state had extra support this summer thanks to a partnership between COSI an OLC. Visit their booth to talk about how your library can participate in the future.</p>
     <p><a href="https://cosi.org/zoo/item/cosi-and-ohio-library-council-kickoff" target="_blank">COSI and OLC Partnership</a></p>
 {:else if tag_number == 5}
-    <p>You found the fifth tag!</p>
+    <h1>You found the 5th tag!</h1>
     <h2>PLA</h2>
-    <p>You should attend the Public Library Association conference April 2024.</p>
+    <p>You should attend the Public Library Association 2024 Conference April 3-5, 2024 at the Greater Columbus Convention Center.</p>
     <p><a href="https://bit.ly/PLAOLC23" target="_blank">Sign up for the PLA raffle to learn more!</a></p>
 {/if}
-
-<!--
-PLA Raffle Entry:
-
--->

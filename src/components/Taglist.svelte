@@ -5,23 +5,43 @@
 <style>
     ul {
         display: flex;
+        margin: 0 0 10px;
+        padding: 0;
     }
     li {
         list-style: none none;
         flex: 1;
         text-align: center;
+        padding: 5px 0;
+    }
+    li:first-child {
+        border-radius: 10px 0 0 10px;
+    }
+    li:last-child {
+        border-radius: 0 10px 10px 0;
     }
     .tapped {
-        background: #ddd;
+        background: #eee;
+        color: #ccc;
+    }
+    .progress-heading {
+        text-align: center;
+        margin: 0;
+        font-weight: normal;
+        color: #666;
+        font-size: .9em;
+    }
+    .winner {
+        text-align: center;
     }
 </style>
 
+<h5 class="progress-heading">Tags left to find</h5>
 <ul>
-<li>Progress:</li>
 {#each [1,2,3,4,5] as tag}
 <li class={tags.includes(tag) ? 'tapped':''}>{tag}</li>
 {/each}
 </ul>
-{#if tags.length == 5}
-<strong>You've found all the tags! Head on back to the Buckeye Innovation booth to collect your prize!</strong>
+{#if tags.length >= 2}
+<div class="winner">You've found at least {tags.length} tags, so you're a winner! Head back to the Buckeye Innovation booth to collect your prize!</div>
 {/if}
