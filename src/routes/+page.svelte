@@ -70,7 +70,7 @@ const tags = [
         text: 'Kids across the state had extra support this summer thanks to a partnership between COSI an OLC. Visit their booth to talk about how your library can participate in the future.',
         hint: 'To learn about the center of the universe, you\'ll need to head to the Center of Science and Industry.',
         cta_img: '',
-        cta_text: 'You\'ll want to get your "hand-on" what we have here.',
+        cta_text: 'Check out what COSI has going on',
         cta_url: 'https://photos.google.com/share/AF1QipNm8a3s-hy1gVecJQwb5ykFj7ZJVVOe4GQ_aGJbuk2unZUFjkQ7IiWEochdMcN8fg?key=SnVvT2RSNmdza2hQVEdrYU4yQUM0bnc1VXVpQk9R'
     },
 
@@ -288,12 +288,12 @@ function resetVote() {
     <p>Welcome back, {name}.</p>
     {#if !vote || !cta_success.includes(2)}
         {#if !tag_arg}
-        <p>Which of the following do you think is the best book series? Click one to vote.</p>
+        <p>Which of the following do you think is the best book series? Tap one to vote.</p>
             {#each vote_options as option}
             <p><button on:click={() => handleSubmitVote(option)}>{option}</button></p>
             {/each}
         {:else}
-            <p>You are about to vote for {tag_arg}. Confirm by clicking below.</p>
+            <p>You are about to vote for {tag_arg}. Confirm by tapping below.</p>
             <p><button on:click={() => handleSubmitVote(tag_arg)}>Vote for {tag_arg}</button></p>
         {/if}
     {:else}
@@ -317,16 +317,18 @@ function resetVote() {
     {#if tags[tag_number].text}
     <p>{@html tags[tag_number].text}</p>
     {/if}
-    <p><button href={tags[tag_number].cta_url} target="_blank">{tags[tag_number].cta_text}</button></p>
+    <p><a class="button" href={tags[tag_number].cta_url} target="_blank">{tags[tag_number].cta_text}</a></p>
+    {#if tags.length > tag_number + 1}
     <h3 class="hint">Next Stop Hint!</h3>
     <div class="hint-container">{@html tags[tag_number+1].hint}</div>
+    {/if}
 {/if}
 
 {#if testing}
 <div style="text-align: left">
 <p>For testing only:</p>
 <ol>
-    {#each [1,3,4,5,6,7] as tag}
+    {#each [1,3,4,5,6,7,8] as tag}
     <li><a href={'/?' + btoa(tag)}>Tag {tag}</a></li>
     {/each}
     {#each vote_options as opt}
