@@ -50,7 +50,7 @@ const tags = [
         cta_url: 'https://www.oplin.ohio.gov',
     },
     {
-        name: 'CBLH Design',
+        name: 'CBLH/Contract Source Inc.',
         text: '',
         hint: 'Tired feet? This ar<strong><u>C</u></strong>hitecture, planning, and interior design firm would happily share their big <strong><u>BL</u></strong>ue couc<strong><u>H</u></strong> and ottoman with you!',
         cta_img: '',
@@ -59,11 +59,11 @@ const tags = [
     },
     {
         name: 'Historic Voices',
-        text: '',
+        text: 'Interested in learning about the history of chocolate? Ask me about it!',
         hint: 'Our Historic Voices are not lost and will not only lead you to your next hint, but to an online database to hear our historical spoken words.',
         cta_img: '',
         cta_text: 'Visit Historic Voices online',
-        cta_url: 'http://www.historicalvoices.org',
+        cta_url: 'http://www.laurafkeyes.com',
     },
     {
         name: 'COSI',
