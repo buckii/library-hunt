@@ -38,10 +38,10 @@
 
 <h5 class="progress-heading">Tags left to find</h5>
 <ul>
-{#each [1,2,3,4,5] as tag}
+{#each [1,2,3,4,5,6,7,8] as tag}
 <li class={tags.includes(tag) ? 'tapped':''}>{tag}</li>
 {/each}
 </ul>
-{#if tags.length >= 2}
-<div class="winner">You've found at least {tags.length} tags, so you're a winner! Head back to the Buckeye Innovation booth to collect your prize!</div>
+{#if tags.length >= 5}
+<div class="winner">You've found {tags.length} tags, so you're a winner! Head back to the Buckeye Innovation booth to collect your prize!</div>
 {/if}

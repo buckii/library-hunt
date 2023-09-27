@@ -1,8 +1,9 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
 body {
     background: #f6f4ee;
     color: #09121c;
     font-family: 'Open Sans', sans-serif;
+    text-align: center;
 }
 h1 {
     font-size: 2em;
@@ -46,4 +47,9 @@ button {
 
 a {
     color: #DF0C2B;
+}
+
+label {
+    font-size: .9em;
+    color: #999;
 }
