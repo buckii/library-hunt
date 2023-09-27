@@ -34,6 +34,7 @@ input {
     width: 100%;
 }
 
+a.button,
 button {
     border-radius: 30px;
     padding: 12px 30px;
@@ -43,6 +44,12 @@ button {
     color: #fff;
     border: none;
     font-size: 1.2em;
+    text-decoration: none;
+}
+button.simple {
+    background: none;
+    color: #999;
+    text-decoration: underline;
 }
 
 a {

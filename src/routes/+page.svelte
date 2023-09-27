@@ -298,7 +298,7 @@ function resetVote() {
         {/if}
     {:else}
     <p>Your vote has been cast for <strong>{vote}</strong>. Visit the Buckeye Innovation booth to see the current vote tally.</p>
-    <p><a on:click={resetVote}>Change my vote</a></p>
+    <p><button class="simple" on:click={resetVote}>Change my vote</button></p>
     <h2>{tags[tag_number].name}</h2>
     <p>{@html tags[tag_number].text}</p>
     {#if !girls_who_code_saved}
