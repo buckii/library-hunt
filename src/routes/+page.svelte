@@ -44,7 +44,7 @@ const tags = [
     {
         name: 'OPLIN',
         text: '',
-        hint: 'Is this a simulation or reality? With fast and free internet speeds, we\'re an Information Network that keeps our Ohio Public Libraries connected.',
+        hint: 'Is this a simulation or reality? With fast and free internet speeds, we\'re an Information Network that keeps our Ohio Public Libraries connected. You\'re not looking for a book this time.',
         cta_img: '',
         cta_text: 'Visit OPLIN online',
         cta_url: 'https://www.oplin.ohio.gov',
@@ -123,7 +123,7 @@ console.log('onMount');
         }
     }
 
-    if(tag_number > 1) {
+    if(tag_number > 1 && name) {
         store();
     }
 
@@ -150,7 +150,7 @@ function store() {
     if(!tags_tapped) {
         tags_tapped = [];
     }
-    if(tag_number > 2) {
+    if(tag_number > 2 && !tags_tapped.includes(tag_number)) {
         tags_tapped.push(tag_number);
     }
     tags_tapped = tags_tapped;
@@ -241,7 +241,7 @@ function resetVote() {
     store();
 }
 </script>
-{#if tag_number === 0}
+{#if tag_number === 0 || !tags_tapped.length}
 <p>Welcome to the Buckeye Innovation NFC demo scavenger hunt!</p>
 <div style="text-align: left">
 <h3 class="hint">Instructions:</h3>
@@ -256,9 +256,27 @@ function resetVote() {
 </ol>
 </div>
 </div>
+
+{#if !tags_tapped.length || !name}
+    <h1>You found your first tag!</h1>
+    <p>Would you share with us a little about yourself?</p>
+    <p>
+        <label for="name">Your First Name</label>
+        <input type="text" id="name" bind:value={name} placeholder="Your First Name" />
+    </p>
+    <p>
+        <label for="library">Your Library / Organization</label>
+        <input type="text" id="library" bind:value={library} placeholder="Your Library / Organization" />
+    </p>
+    <p>
+        <label for="email">Your Email Address</label>
+        <input type="email" id="email" bind:value={email} placeholder="Your Email Address" />
+    </p>
+    <button on:click={handleSubmitFirst}>Submit</button>
+{/if}
+
 {:else if tag_number === 1}
-    <h1>You found the first tag!</h1>
-    {#if tags_tapped.includes(1) }
+    {#if tags_tapped.length && name }
         <h2>It's great to meet you, {name}.</h2>
         
         <p>You're on a journey to discover some ways NFC tags and web technology can effectively engage and serve your library staff, cardholders, donors, and more!</p>
@@ -267,21 +285,6 @@ function resetVote() {
 
         <h3 class="hint">Hint!</h3>
         <div class="hint-container">{@html tags[tag_number+1].hint}</div>
-    {:else}
-        <p>Would you share with us a little about yourself?</p>
-        <p>
-            <label for="name">Your First Name</label>
-            <input type="text" id="name" bind:value={name} placeholder="Your First Name" />
-        </p>
-        <p>
-            <label for="library">Your Library / Organization</label>
-            <input type="text" id="library" bind:value={library} placeholder="Your Library / Organization" />
-        </p>
-        <p>
-            <label for="email">Your Email Address</label>
-            <input type="email" id="email" bind:value={email} placeholder="Your Email Address" />
-        </p>
-        <button on:click={handleSubmitFirst}>Submit</button>
     {/if}
 {:else if tag_number == 2}
     <h1>You found the tag #{tag_number}!</h1>

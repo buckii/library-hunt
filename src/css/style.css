@@ -60,3 +60,8 @@ label {
     font-size: .9em;
     color: #999;
 }
+
+.winner {
+    font-weight: bold;
+    font-size: 1.2em;
+}
