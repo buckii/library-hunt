@@ -16,6 +16,18 @@ export function mysqlconnFn() {
   return mysqlconn;
 }
 
+  // Close the MySQL connection
+function closeConnection() {
+  mysqlconn.end((error) => {
+    if (error) {
+      console.error('Error closing MySQL connection:', error);
+      return;
+    }
+
+    console.log('MySQL connection closed.');
+  });
+}
+
 export async function storeInDB(data) {
   let mysqlconn = await mysqlconnFn();
   let results;
@@ -41,6 +53,7 @@ export async function storeInDB(data) {
     }
 
     if(!id) {
+      closeConnection();
       return 'Insert failed';
     }
 
@@ -55,9 +68,11 @@ export async function storeInDB(data) {
       )
       .then(function ([rows, fields]) {
         console.log({rows,fields});
+      closeConnection();
         return rows;
       });
 
+      closeConnection();
     return {
       data: results,
     };
