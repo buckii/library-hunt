@@ -75,20 +75,41 @@ console.log('onMount');
 //console.log(localStorage.getItem('user'));
 
 function store() {
+    localStorage.setItem('testing', testing);
     localStorage.setItem('name', name);
     localStorage.setItem('library', library);
     localStorage.setItem('email', email);
     localStorage.setItem('vote', vote);
-    localStorage.setItem('vote_success', JSON.stringify(vote_success));
+    localStorage.setItem('cta_success', JSON.stringify(cta_success));
 
     if(!tags_tapped) {
         tags_tapped = [];
     }
-    if(!tags_tapped.includes(tag_number)) {
+    if(tag_number > 2) {
         tags_tapped.push(tag_number);
     }
     tags_tapped = tags_tapped;
     localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
+
+    let data = {
+        name,
+        library,
+        email,
+        vote,
+        cta_success,
+        tags_tapped
+    };
+    //let data_string = JSON.stringify(data);
+    axios.post('/user', data)
+    .then(function (response) {
+        console.log('saved successfully');
+        if(!tags_tapped.includes(tag_number) && tag_number > 0) {
+            tags_tapped.push(tag_number);
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 function resetTagsTapped() {
@@ -97,7 +118,7 @@ function resetTagsTapped() {
     email = '';
     library = '';
     vote = '';
-    vote_success = false;
+    cta_success = [];
     store();
 }
 
@@ -123,7 +144,10 @@ function handleSubmitVote(vote_val) {
     let data_string = JSON.stringify(data);
     axios.post('/vote', data_string)
     .then(function (response) {
-        vote_success = response.data;
+        if(!cta_success.includes(2)) {
+            cta_success.push(2);
+            cta_success = cta_success;
+        }
         store();
     })
     .catch(function (error) {
