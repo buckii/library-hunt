@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import Pusher from 'pusher-js';
 import { PUBLIC_PUSHER_KEY, PUBLIC_PUSHER_CHANNEL, PUBLIC_PUSHER_EVENT } from "$env/static/public";
 import axios from 'axios';
+import Taglist from '../components/Taglist.svelte';
 
 let pusher;
 let pusher_channel;
@@ -241,6 +242,10 @@ function resetVote() {
     store();
 }
 </script>
+
+<div class="container">
+<Taglist tags={tags_tapped}></Taglist>
+
 {#if tag_number === 0 || !tags_tapped.length}
 <p>Welcome to the Buckeye Innovation NFC demo scavenger hunt!</p>
 <div style="text-align: left">
@@ -341,3 +346,4 @@ function resetVote() {
 <button on:click={resetTagsTapped}>Reset Tags Tapped</button>
 </div>
 {/if}
+</div>

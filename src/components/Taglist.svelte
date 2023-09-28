@@ -1,6 +1,5 @@
 <script>
     export let tags;
-
 </script>
 <style>
     ul {

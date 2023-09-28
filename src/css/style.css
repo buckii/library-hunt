@@ -9,7 +9,7 @@ h1 {
     font-size: 2em;
     color: #DF0C2B;
 }
-main {
+div.container {
     max-width: 400px;
     margin: 20px auto;
 }
@@ -64,4 +64,18 @@ label {
 .winner {
     font-weight: bold;
     font-size: 1.2em;
+}
+
+td {
+    text-align: left;
+}
+
+.flex {
+    display: flex;
+}
+.flex > div {
+    flex: 1;
+}
+.center {
+    text-align: center;
 }

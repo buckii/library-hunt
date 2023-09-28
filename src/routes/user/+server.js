@@ -3,12 +3,20 @@ import { message } from '$lib/pusher';
 import { storeInDB } from "$lib/db/mysql";
 
 export async function POST({ request }) {
-    //const { vote, email } = await request.json();
     const data = await request.json();
     console.log('storing in DB');
     
     // store in db
     let result = await storeInDB(data);
+
+    message('user', 'updated');
+
+    return json(result);
+}
+
+export async function GET({ request }) {
+    // store in db
+    let result = await getAllUsers();
 
     return json(result);
 }

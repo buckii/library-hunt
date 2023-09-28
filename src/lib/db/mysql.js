@@ -67,3 +67,83 @@ export async function storeInDB(data) {
     return error;
   }
 }
+
+export async function getVoteCounts() {
+  let mysqlconn = await mysqlconnFn();
+  let results;
+
+  try {
+    await mysqlconn
+      .query("SELECT vote,count(*) as vote_count FROM users WHERE LENGTH(vote)>0 GROUP BY vote ORDER BY vote;")
+      .then(function ([rows, fields]) {
+        results = rows;
+      })
+      .then( () => mysqlconn.end());
+
+  } catch (error) {
+    console.error("Got an error!!!");
+    console.log(error);
+  }
+  return results;
+}
+
+export async function getAllUsers() {
+  let mysqlconn = await mysqlconnFn();
+  let results;
+
+  try {
+    await mysqlconn
+      .query("SELECT * FROM users ORDER BY id DESC;")
+      .then(function ([rows, fields]) {
+        results = rows;
+      })
+      .then( () => mysqlconn.end());
+
+  } catch (error) {
+    console.error("Got an error!!!");
+    console.log(error);
+  }
+  return results;
+}
+
+export async function getLeaderboard() {
+  let mysqlconn = await mysqlconnFn();
+  let latest;
+  let libraries;
+  let leaders;
+
+  try {
+    await mysqlconn
+      .query("SELECT library,count(*) as library_count FROM users "
+       + "WHERE LENGTH(library)>0 AND library != 'Buckeye Innovation'"
+       + "GROUP BY library ORDER BY count(*) DESC LIMIT 10;")
+      .then(function ([rows, fields]) {
+        libraries = rows;
+      });
+    await mysqlconn
+      .query("SELECT name,library,tags_tapped FROM users "
+        + "WHERE name not like '%test%' AND email NOT LIKE '%test%' and library != 'Buckeye Innovation'"
+        + "ORDER BY id DESC LIMIT 10;")
+      .then(function ([rows, fields]) {
+        latest = rows;
+      });
+    await mysqlconn
+      .query("SELECT name,library,tags_tapped FROM users "
+        + "WHERE name not like '%test%' AND email NOT LIKE '%test%' and library != 'Buckeye Innovation'"
+        + "ORDER BY LENGTH(tags_tapped) DESC,id DESC LIMIT 10;")
+      .then(function ([rows, fields]) {
+        leaders = rows;
+      });
+
+      mysqlconn.end();
+
+  } catch (error) {
+    console.error("Got an error!!!");
+    console.log(error);
+  }
+  return {
+    latest,
+    leaders,
+    libraries,
+  };
+}
