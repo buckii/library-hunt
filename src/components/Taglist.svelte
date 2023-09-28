@@ -12,6 +12,7 @@
         flex: 1;
         text-align: center;
         padding: 5px 0;
+        border: 1px solid #ddd;
     }
     li:first-child {
         border-radius: 10px 0 0 10px;

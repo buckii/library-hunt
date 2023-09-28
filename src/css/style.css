@@ -4,6 +4,11 @@ body {
     color: #09121c;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
+    box-sizing: border-box;
+    line-height: 1.5em;
+}
+* {
+    box-sizing: border-box;
 }
 h1 {
     font-size: 2em;
@@ -36,9 +41,11 @@ input {
 
 a.button,
 button {
+    display: block;
+    width: 100%;
     border-radius: 30px;
     padding: 12px 30px;
-    margin: 10px;
+    margin: 10px 0;
     width: 100%;
     background: #DF0C2B;
     color: #fff;
@@ -92,4 +99,28 @@ th,td {
 }
 tr:nth-child(odd) {
     background: #eee;
+}
+
+.found-it {
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    animation: zoom-in-zoom-out 2s ease 3;
+}
+
+.powered-by {
+    width: 200px;
+    margin: 30px auto 0;
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(4, 4);
+  }
+  100% {
+    transform: scale(0, 0);
+  }
 }

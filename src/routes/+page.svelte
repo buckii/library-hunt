@@ -73,7 +73,7 @@ const tags = [
         text: 'Kids across the state had extra support this summer thanks to a partnership between COSI an OLC. Visit their booth to talk about how your library can participate in the future.',
         hint: 'To learn about the center of the universe, you\'ll need to head to the Center of Science and Industry.',
         cta_img: '',
-        cta_text: 'Check out what COSI has going on',
+        cta_text: 'Check out COSI photos',
         cta_url: 'https://photos.google.com/share/AF1QipNm8a3s-hy1gVecJQwb5ykFj7ZJVVOe4GQ_aGJbuk2unZUFjkQ7IiWEochdMcN8fg?key=SnVvT2RSNmdza2hQVEdrYU4yQUM0bnc1VXVpQk9R'
     },
 
@@ -254,6 +254,8 @@ function resetVote() {
 {#if loaded}
 <Taglist tags={tags_tapped}></Taglist>
 
+<img src="/nfc-found.svg" alt="You found it!" class="found-it" />
+
 {#if tag_number === 0 || !tags_tapped.length}
 <p>Welcome to the Buckeye Innovation NFC demo scavenger hunt!</p>
 <div style="text-align: left">
@@ -300,7 +302,7 @@ function resetVote() {
         <div class="hint-container">{@html tags[tag_number+1].hint}</div>
     {/if}
 {:else if tag_number == 2}
-    <h1>You found the tag #{tag_number}!</h1>
+    <h1>You found tag #{tag_number}!</h1>
     <p>Welcome back, {name}.</p>
     {#if !vote || !cta_success.includes(2)}
         {#if !tag_arg}
@@ -328,7 +330,7 @@ function resetVote() {
     <div class="hint-container">{@html tags[tag_number+1].hint}</div>
     {/if}
 {:else if tag_number}
-    <h1>You found the tag #{tag_number}!</h1>
+    <h1>You found tag #{tag_number}!</h1>
     <h2>{tags[tag_number].name}</h2>
     {#if tags[tag_number].text}
     <p>{@html tags[tag_number].text}</p>
