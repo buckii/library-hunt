@@ -2,30 +2,17 @@ import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from "$env/static/private";
 
 import mysql from "mysql2/promise";
 
-let mysqlconn = null;
-
 export function mysqlconnFn() {
   //always create a new connection to avoid closed connections
-  mysqlconn = mysql.createConnection({
+  let mysqlconn = mysql.createConnection({
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
     database: DB_NAME,
+    connectionLimit: 10,
   });
 
   return mysqlconn;
-}
-
-  // Close the MySQL connection
-function closeConnection() {
-  mysqlconn.end((error) => {
-    if (error) {
-      console.error('Error closing MySQL connection:', error);
-      return;
-    }
-
-    console.log('MySQL connection closed.');
-  });
 }
 
 export async function storeInDB(data) {
@@ -36,7 +23,8 @@ export async function storeInDB(data) {
     if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)) {
       return 'Invalid email';
     }
-    results = await mysqlconn
+
+    await mysqlconn
       .query("SELECT id FROM users where email='" + data.email + "';")
       .then(function ([rows, fields]) {
         if(rows && rows.length) {
@@ -45,7 +33,7 @@ export async function storeInDB(data) {
       });
 
     if(!id) {
-      results = await mysqlconn
+      await mysqlconn
         .query("INSERT INTO users(email) VALUES('" + data.email + "');")
         .then(function ([rows, fields]) {
           id = rows.insertId;
@@ -53,11 +41,11 @@ export async function storeInDB(data) {
     }
 
     if(!id) {
-      closeConnection();
+      mysqlconn.end();
       return 'Insert failed';
     }
 
-    results = await mysqlconn
+    await mysqlconn
       .query("UPDATE users SET "
         + "name='" + data.name + "'"
         + ",library='" + data.library + "'"
@@ -67,12 +55,9 @@ export async function storeInDB(data) {
         + " WHERE id='" + id + "';"
       )
       .then(function ([rows, fields]) {
-        console.log({rows,fields});
-      closeConnection();
-        return rows;
+        mysqlconn.end();
       });
 
-      closeConnection();
     return {
       data: results,
     };
