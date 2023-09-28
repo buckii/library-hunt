@@ -34,7 +34,7 @@ export async function storeInDB(data) {
 
     if(!id) {
       await mysqlconn
-        .query("INSERT INTO users(email) VALUES('" + data.email + "');")
+        .query("INSERT INTO users(email,created_at) VALUES('" + data.email + "',now());")
         .then(function ([rows, fields]) {
           id = rows.insertId;
         });
@@ -52,7 +52,7 @@ export async function storeInDB(data) {
         + ",vote='" + data.vote + "'"
         + ",tags_tapped='" + data.tags_tapped + "'"
         + ",cta_success='" + data.cta_success + "'"
-        + " WHERE id='" + id + "';"
+        + ",updated_at=now() WHERE id='" + id + "';"
       )
       .then(function ([rows, fields]) {
         mysqlconn.end();
