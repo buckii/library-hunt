@@ -115,7 +115,7 @@ onMount(() => {
       <tr>
         <td>{lead.name}</td>
         <td>{lead.library}</td>
-        <td>{lead.tags_tapped.split(/,/).length}</td>
+        <td class="center">{lead.tags_tapped.split(/,/).length}</td>
       </tr>
       {/each}
       {/if}
@@ -134,7 +134,7 @@ onMount(() => {
       {#each leaderboard.libraries as lib}
       <tr>
         <td>{lib.library}</td>
-        <td>{lib.library_count}</td>
+        <td class="center">{lib.library_count}</td>
       </tr>
       {/each}
       {/if}

@@ -13,6 +13,8 @@ let tags_tapped = [];
 let tag_arg = '';
 let cta_success = [];
 let testing = false;
+let loaded = false;
+
 const tags = [
     null,
     {
@@ -128,6 +130,8 @@ console.log('onMount');
         store();
     }
 
+    loaded = true;
+
     pusher = new Pusher(PUBLIC_PUSHER_KEY, {
       cluster: 'us2'
     });
@@ -138,7 +142,12 @@ console.log('onMount');
     });
 });
 
-//console.log(localStorage.getItem('user'));
+function addCurrentTag() {
+    if(!tags_tapped.includes(tag_number) && tag_number > 0) {
+        tags_tapped.push(tag_number);
+        tags_tapped = tags_tapped;
+    }
+}
 
 function store() {
     localStorage.setItem('testing', testing);
@@ -152,9 +161,8 @@ function store() {
         tags_tapped = [];
     }
     if(tag_number > 2 && !tags_tapped.includes(tag_number)) {
-        tags_tapped.push(tag_number);
+        addCurrentTag();
     }
-    tags_tapped = tags_tapped;
     localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
 
     let data = {
@@ -169,9 +177,8 @@ function store() {
     axios.post('/user', data)
     .then(function (response) {
         console.log('saved successfully');
-        if(!tags_tapped.includes(tag_number) && tag_number > 0) {
-            tags_tapped.push(tag_number);
-        }
+        addCurrentTag();
+        localStorage.setItem('tags_tapped', JSON.stringify(tags_tapped));
     })
     .catch(function (error) {
         console.log(error);
@@ -244,6 +251,7 @@ function resetVote() {
 </script>
 
 <div class="container">
+{#if loaded}
 <Taglist tags={tags_tapped}></Taglist>
 
 {#if tag_number === 0 || !tags_tapped.length}
@@ -345,5 +353,6 @@ function resetVote() {
 </ol>
 <button on:click={resetTagsTapped}>Reset Tags Tapped</button>
 </div>
+{/if}
 {/if}
 </div>
